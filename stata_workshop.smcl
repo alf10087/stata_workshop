@@ -1,0 +1,354 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Volumes/GoogleDrive/Other computers/My MacBook Pro/Google Drive/Work/Stata workshop/stata_workshop.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 9 Sep 2022, 11:11:13
+{txt}
+{com}. 
+. *** Load the data
+. sysuse census.dta, clear
+{txt}(1980 Census data by state)
+
+{com}. 
+. ******************************
+. *** Exploring
+. 
+. *** Some initial explorations
+. describe
+
+{txt}Contains data from {res}/Applications/Stata/ado/base/c/census.dta
+{txt} Observations:{res}            50                  1980 Census data by state
+{txt}    Variables:{res}            13                  6 Apr 2020 15:43
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:state          }{txt}{bind: str14   }{bind:{txt}%-14s     }{space 1}{bind:         }{bind:  }{res}{res}State{p_end}
+{p 0 48}{bind:state2         }{txt}{bind: str2    }{bind:{txt}%-2s      }{space 1}{bind:         }{bind:  }{res}{res}Two-letter state abbreviation{p_end}
+{p 0 48}{bind:region         }{txt}{bind: int     }{bind:{txt}%-8.0g    }{space 1}{bind:cenreg   }{bind:  }{res}{res}Census region{p_end}
+{p 0 48}{bind:pop            }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Population{p_end}
+{p 0 48}{bind:poplt5         }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Pop, < 5 year{p_end}
+{p 0 48}{bind:pop5_17        }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Pop, 5 to 17 years{p_end}
+{p 0 48}{bind:pop18p         }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Pop, 18 and older{p_end}
+{p 0 48}{bind:pop65p         }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Pop, 65 and older{p_end}
+{p 0 48}{bind:popurban       }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Urban population{p_end}
+{p 0 48}{bind:medage         }{txt}{bind: float   }{bind:{txt}%9.2f     }{space 1}{bind:         }{bind:  }{res}{res}Median age{p_end}
+{p 0 48}{bind:death          }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Number of deaths{p_end}
+{p 0 48}{bind:marriage       }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Number of marriages{p_end}
+{p 0 48}{bind:divorce        }{txt}{bind: long    }{bind:{txt}%12.0gc   }{space 1}{bind:         }{bind:  }{res}{res}Number of divorces{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. summarize pop region popurban death
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}pop {c |}{res}         50     4518149     4715038     401851   2.37e+07
+{txt}{space 6}region {c |}{res}         50        2.66    1.061574          1          4
+{txt}{space 4}popurban {c |}{res}         50     3328253     4090178     172735   2.16e+07
+{txt}{space 7}death {c |}{res}         50    39474.26    41742.35       1604     186428
+{txt}
+{com}. tab region
+
+     {txt}Census {c |}
+     region {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+         NE {c |}{res}          9       18.00       18.00
+{txt}    N Cntrl {c |}{res}         12       24.00       42.00
+{txt}      South {c |}{res}         16       32.00       74.00
+{txt}       West {c |}{res}         13       26.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         50      100.00
+{txt}
+{com}. table state region
+{res}
+{smcl}
+{reset}{...}
+{hline 15}{c -}{c TT}{c -}{c -}{hline 2}{c -}{c -}{c -}{hline 7}{c -}{c -}{c -}{hline 5}{c -}{c -}{c -}{hline 4}{c -}{c -}{c -}{hline 5}
+{space 15} {c |}  {space 11}Census region{space 11}
+{space 15} {c |}  NE   N Cntrl   South   West   Total
+{hline 15}{c -}{c +}{c -}{c -}{hline 2}{c -}{c -}{c -}{hline 7}{c -}{c -}{c -}{hline 5}{c -}{c -}{c -}{hline 4}{c -}{c -}{c -}{hline 5}
+State{space 10} {c |}  {space 2}   {space 7}   {space 5}   {space 4}   {space 5}
+  Alabama{space 6} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Alaska{space 7} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Arizona{space 6} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Arkansas{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  California{space 3} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Colorado{space 5} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Connecticut{space 2} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Delaware{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Florida{space 6} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Georgia{space 6} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Hawaii{space 7} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Idaho{space 8} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Illinois{space 5} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Indiana{space 6} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Iowa{space 9} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Kansas{space 7} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Kentucky{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Louisiana{space 4} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Maine{space 8} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Maryland{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Massachusetts {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Michigan{space 5} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Minnesota{space 4} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Mississippi{space 2} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Missouri{space 5} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Montana{space 6} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  N. Carolina{space 2} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  N. Dakota{space 4} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Nebraska{space 5} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Nevada{space 7} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  New Hampshire {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  New Jersey{space 3} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  New Mexico{space 3} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  New York{space 5} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Ohio{space 9} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Oklahoma{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Oregon{space 7} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Pennsylvania{space 1} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Rhode Island{space 1} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  S. Carolina{space 2} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  S. Dakota{space 4} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Tennessee{space 4} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Texas{space 8} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Utah{space 9} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Vermont{space 6} {c |}  {space 1}{result:1}   {space 7}   {space 5}   {space 4}   {space 4}{result:1}
+  Virginia{space 5} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  W. Virginia{space 2} {c |}  {space 2}   {space 7}   {space 4}{result:1}   {space 4}   {space 4}{result:1}
+  Washington{space 3} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Wisconsin{space 4} {c |}  {space 2}   {space 6}{result:1}   {space 5}   {space 4}   {space 4}{result:1}
+  Wyoming{space 6} {c |}  {space 2}   {space 7}   {space 5}   {space 3}{result:1}   {space 4}{result:1}
+  Total{space 8} {c |}  {space 1}{result:9}   {space 5}{result:12}   {space 3}{result:16}   {space 2}{result:13}   {space 3}{result:50}
+{hline 15}{c -}{c BT}{c -}{c -}{hline 2}{c -}{c -}{c -}{hline 7}{c -}{c -}{c -}{hline 5}{c -}{c -}{c -}{hline 4}{c -}{c -}{c -}{hline 5}
+
+{com}. ** Table is not very helpful unless we have groups
+. 
+. *** We can use conditional commands to restrict our data to what we need
+. 
+. summarize pop region popurban death if region == 1 
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}pop {c |}{res}          9     5459476     5925235     511456   1.76e+07
+{txt}{space 6}region {c |}{res}          9           1           0          1          1
+{txt}{space 4}popurban {c |}{res}          9     4322838     4918176     172735   1.49e+07
+{txt}{space 7}death {c |}{res}          9    52996.11    59289.85       4587     171769
+{txt}
+{com}. 
+. tab region if pop <= 1000000
+
+     {txt}Census {c |}
+     region {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+         NE {c |}{res}          3       25.00       25.00
+{txt}    N Cntrl {c |}{res}          2       16.67       41.67
+{txt}      South {c |}{res}          1        8.33       50.00
+{txt}       West {c |}{res}          6       50.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         12      100.00
+{txt}
+{com}. tab region if pop > 10000000 
+
+     {txt}Census {c |}
+     region {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+         NE {c |}{res}          2       33.33       33.33
+{txt}    N Cntrl {c |}{res}          2       33.33       66.67
+{txt}      South {c |}{res}          1       16.67       83.33
+{txt}       West {c |}{res}          1       16.67      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}          6      100.00
+{txt}
+{com}. tab region if pop <= 1000000 | pop > 10000000 
+
+     {txt}Census {c |}
+     region {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+         NE {c |}{res}          5       27.78       27.78
+{txt}    N Cntrl {c |}{res}          4       22.22       50.00
+{txt}      South {c |}{res}          2       11.11       61.11
+{txt}       West {c |}{res}          7       38.89      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         18      100.00
+{txt}
+{com}. 
+. ******************************
+. *** Cleaning
+. 
+. rename state2 state_ab
+{res}{txt}
+{com}. rename medage median_age
+{res}{txt}
+{com}. 
+. label variable state_ab "State abbreviation with clear name"
+{txt}
+{com}. gen urban_per = popurban/pop 
+{txt}
+{com}. 
+. *** More advanced new variable generation
+. egen highest_pop_group = rowmax(poplt5 pop5_17 pop18p pop65p)
+{txt}
+{com}. gen largest_18p = 1 if pop18p == highest_pop_group
+{txt}
+{com}. tab largest_18p
+
+{txt}largest_18p {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}         50      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         50      100.00
+{txt}
+{com}. 
+. *** But this doesn't make a lot of sense analytically, 
+. *** of course it is the largest_18p
+. *** Let's generate the population between 18 and 65
+. 
+. gen pop18_35 = pop18p - pop65p
+{txt}
+{com}. drop highest_pop_group largest_18p
+{txt}
+{com}. egen highest_pop_group = rowmax(poplt5 pop5_17 pop65p pop18_35)
+{txt}
+{com}. gen largest_18p = 1 if pop18_35 == highest_pop_group
+{txt}
+{com}. tab largest_18p
+
+{txt}largest_18p {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}         50      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         50      100.00
+{txt}
+{com}. 
+. *** Generate id's 
+. sort region
+{txt}
+{com}. by region: gen id = _n
+{txt}
+{com}. 
+. *** drop conditionally
+. * drop if region != 4 
+. 
+. ******************************
+. *** Graphs
+. 
+. *** Scatterplot
+. scatter pop death
+{res}{txt}
+{com}. scatter pop death if state_ab != "CA" & state_ab != "TX" 
+{res}{txt}
+{com}. scatter pop death if pop < 15000000
+{res}{txt}
+{com}. 
+. *** Histogram
+. histogram pop
+{txt}(bin={res}7{txt}, start={res}401851{txt}, width={res}3323721.6{txt})
+{res}{txt}
+{com}. histogram median_age
+{txt}(bin={res}7{txt}, start={res}24.200001{txt}, width={res}1.5{txt})
+{res}{txt}
+{com}. 
+. *** Boxplots
+. graph box median_age, over(region)
+{res}{txt}
+{com}. 
+. *** Density graphs
+. 
+. kdensity urban_per
+{res}{txt}
+{com}. kdensity urban_per, ///
+> title("Density Estimation for Urban Population in Sample Dataset") subtitle("Stata Workshop, 2022") ///
+> ytitle("Density Estimation of Population Proportion") xtitle("Percent of Urban Population")
+{res}{txt}
+{com}. 
+. *** The three dashes allows you to go from one line to the other in the editor
+. 
+. *******************************
+. *** Intro to regression
+. 
+. *** Basic OLS
+. regress death pop divorce i.region
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}        50
+{txt}{hline 13}{c +}{hline 34}   F(5, 44)        = {res}   511.86
+{txt}       Model {c |} {res} 8.3936e+10         5  1.6787e+10   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.4430e+09        44  32796575.5   {txt}R-squared       ={res}    0.9831
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9812
+{txt}       Total {c |} {res} 8.5379e+10        49  1.7424e+09   {txt}Root MSE        =   {res} 5726.8
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}       death{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 9}pop {c |}{col 14}{res}{space 2} .0100621{col 26}{space 2} .0006016{col 37}{space 1}   16.72{col 46}{space 3}0.000{col 54}{space 4} .0088496{col 67}{space 3} .0112747
+{txt}{space 5}divorce {c |}{col 14}{res}{space 2}-.2777108{col 26}{space 2} .1125169{col 37}{space 1}   -2.47{col 46}{space 3}0.018{col 54}{space 4}-.5044737{col 67}{space 3}-.0509478
+{txt}{space 12} {c |}
+{space 6}region {c |}
+{space 4}N Cntrl  {c |}{col 14}{res}{space 2}-2712.857{col 26}{space 2} 2677.615{col 37}{space 1}   -1.01{col 46}{space 3}0.317{col 54}{space 4}-8109.236{col 67}{space 3} 2683.522
+{txt}{space 6}South  {c |}{col 14}{res}{space 2}-2049.005{col 26}{space 2}  2772.83{col 37}{space 1}   -0.74{col 46}{space 3}0.464{col 54}{space 4}-7637.277{col 67}{space 3} 3539.267
+{txt}{space 7}West  {c |}{col 14}{res}{space 2}-5878.165{col 26}{space 2} 2890.079{col 37}{space 1}   -2.03{col 46}{space 3}0.048{col 54}{space 4}-11702.74{col 67}{space 3}-53.59414
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  3423.19{col 26}{space 2} 2346.275{col 37}{space 1}    1.46{col 46}{space 3}0.152{col 54}{space 4}-1305.416{col 67}{space 3} 8151.797
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+. *** Logistic
+. 
+. **** We need a binary variable
+. 
+. gen very_urban = 1 if urban_per > 0.7
+{txt}(30 missing values generated)
+
+{com}. replace very_urban = 0 if very_urban != 1
+{txt}(30 real changes made)
+
+{com}. tab very_urban
+
+ {txt}very_urban {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}         30       60.00       60.00
+{txt}          1 {c |}{res}         20       40.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         50      100.00
+{txt}
+{com}. 
+. logit very_urban pop death divorce i.region
+
+{res}{txt}Iteration 0:{space 3}log likelihood = {res:-33.650583}  
+Iteration 1:{space 3}log likelihood = {res: -23.47611}  
+Iteration 2:{space 3}log likelihood = {res:-21.312127}  
+Iteration 3:{space 3}log likelihood = {res: -21.11726}  
+Iteration 4:{space 3}log likelihood = {res:-21.116016}  
+Iteration 5:{space 3}log likelihood = {res:-21.116016}  
+{res}
+{txt}{col 1}Logistic regression{col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:50}
+{txt}{col 57}{lalign 13:LR chi2({res:6})}{col 70} = {res}{ralign 6:25.07}
+{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0003}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-21.116016}{txt}{col 57}{lalign 13:Pseudo R2}{col 70} = {res}{ralign 6:0.3725}
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}  very_urban{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 9}pop {c |}{col 14}{res}{space 2} 1.83e-06{col 26}{space 2} 9.98e-07{col 37}{space 1}    1.84{col 46}{space 3}0.066{col 54}{space 4}-1.21e-07{col 67}{space 3} 3.79e-06
+{txt}{space 7}death {c |}{col 14}{res}{space 2}-.0001976{col 26}{space 2} .0001037{col 37}{space 1}   -1.91{col 46}{space 3}0.057{col 54}{space 4}-.0004008{col 67}{space 3} 5.66e-06
+{txt}{space 5}divorce {c |}{col 14}{res}{space 2}  .000106{col 26}{space 2} .0000618{col 37}{space 1}    1.72{col 46}{space 3}0.086{col 54}{space 4}-.0000151{col 67}{space 3}  .000227
+{txt}{space 12} {c |}
+{space 6}region {c |}
+{space 4}N Cntrl  {c |}{col 14}{res}{space 2}-4.145376{col 26}{space 2} 1.911819{col 37}{space 1}   -2.17{col 46}{space 3}0.030{col 54}{space 4}-7.892473{col 67}{space 3}-.3982796
+{txt}{space 6}South  {c |}{col 14}{res}{space 2}-3.446921{col 26}{space 2} 1.457147{col 37}{space 1}   -2.37{col 46}{space 3}0.018{col 54}{space 4}-6.302876{col 67}{space 3}-.5909663
+{txt}{space 7}West  {c |}{col 14}{res}{space 2}-.2951949{col 26}{space 2} 1.213846{col 37}{space 1}   -0.24{col 46}{space 3}0.808{col 54}{space 4}-2.674288{col 67}{space 3} 2.083899
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}-1.137792{col 26}{space 2} .9672502{col 37}{space 1}   -1.18{col 46}{space 3}0.239{col 54}{space 4}-3.033567{col 67}{space 3} .7579836
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 2}Note: 0 failures and 1 success completely determined.{p_end}
+
+{com}. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Volumes/GoogleDrive/Other computers/My MacBook Pro/Google Drive/Work/Stata workshop/stata_workshop.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 9 Sep 2022, 11:11:15
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
